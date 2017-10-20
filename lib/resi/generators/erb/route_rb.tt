@@ -1,0 +1,5 @@
+require 'sinatra'
+
+get '/<%= config['path'] %>' do
+  'Welcome to Resi'
+end

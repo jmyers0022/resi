@@ -1,0 +1,14 @@
+import React from 'react';
+
+class ExampleComponent extends React.Component {
+  render() {
+    return(
+      <div>
+        <h1>Welcome to Resi</h1>
+        <p>See {this.props.path} to view this sample React component.</p>
+      </div>
+    );
+  }
+}
+
+export default ExampleComponent;

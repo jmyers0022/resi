@@ -1,0 +1,24 @@
+require 'sinatra/base'
+require 'yaml'
+require 'erb'
+require 'sequel'
+
+class App < Sinatra::Application
+  set :root, File.dirname(__FILE__)
+  set :views, Proc.new { File.join(root, '../app/layouts') }
+  set :public_folder, Proc.new { File.join(root, '../public') }
+  set :server, %w(thin)
+  set :port, 9292
+
+  # TODO: Auto-require all routes files
+  require_relative '../app/routes/root'
+end
+
+def db_config
+  YAML.load(ERB.new(File.read('./config/db.yml')).result)
+end
+
+env = ENV.fetch('resi_environment', 'development')
+config = db_config[env]
+
+DB = Sequel.connect(config.merge('database' => 'postgres'))

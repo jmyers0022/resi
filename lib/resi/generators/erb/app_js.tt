@@ -1,0 +1,19 @@
+/** Bootstrap the Webpack SCSS loader */
+import '../scss/app.scss';
+
+/** Import es6 polyfills */
+import 'core-js/es6/map';
+import 'core-js/es6/set';
+
+/** Node module imports */
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+/** Application imports */
+import ExampleComponent from './components/ExampleComponent';
+
+/** Kick off application */
+ReactDOM.render(
+  <ExampleComponent path='app/assets/js/components/ExampleComponent.js' />,
+  document.getElementById('js-app-container')
+);

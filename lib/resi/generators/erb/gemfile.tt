@@ -1,0 +1,15 @@
+source "https://rubygems.org"
+
+git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
+
+gem 'resi', '0.0.1', path: '../resi/pkg'
+gem 'sinatra'
+gem 'sinatra-contrib'
+gem 'rake'
+gem 'rack'
+gem 'thin'
+gem 'rerun'
+gem 'pg'
+gem 'sequel'
+gem 'sequel_pg'
+gem 'byebug'

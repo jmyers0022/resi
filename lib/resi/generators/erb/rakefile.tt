@@ -1,0 +1,55 @@
+require 'rack'
+require 'yaml'
+require 'erb'
+require 'sequel'
+
+def run_db_task
+
+  def db_config
+    YAML.load(ERB.new(File.read('./config/db.yml')).result)
+  end
+
+  env = ENV.fetch('resi_environment', 'development')
+  config = db_config[env]
+
+  puts "Running #{yield} command in the #{env} environment"
+
+  Sequel.connect(config.merge('database' => 'postgres')) do |db|
+    db.execute "#{yield} #{config['database']}"
+  end
+
+  puts "Success!"
+end
+
+task default: %w(serve)
+
+task :serve do
+  system 'rerun -- rackup config.ru'
+end
+
+task :watch do
+  system 'rerun --dir app/assets "yarn webpack"'
+end
+
+task :create_db do
+  run_db_task { 'CREATE DATABASE' }
+end
+
+task :destroy_db do
+  run_db_task { 'DROP DATABASE IF EXISTS' }
+end
+
+task :create_migration do
+  # run a thor generator to create a migration file
+end
+
+task :migrate do
+  def db_config
+    YAML.load(ERB.new(File.read('./config/db.yml')).result)
+  end
+
+  env = ENV.fetch('resi_environment', 'development')
+  config = db_config[env]
+
+  system "sequel -m ./db/migrations postgres://localhost/#{config['database']}"
+end
